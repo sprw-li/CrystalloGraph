@@ -1,0 +1,17 @@
+{
+  "name": "crystallograph",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "node scripts/dev-web.mjs",
+    "dev:desktop": "node scripts/dev-desktop.mjs",
+    "build:web": "npm run build -w @cgraph/web",
+    "build:core": "npm run build -w @cgraph/core",
+    "typecheck": "npm run typecheck -w @cgraph/core && npm run typecheck -w @cgraph/web",
+    "shortcut": "powershell -ExecutionPolicy Bypass -File ./scripts/create-desktop-shortcut.ps1"
+  }
+}

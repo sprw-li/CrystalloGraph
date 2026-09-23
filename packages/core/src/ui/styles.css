@@ -1,0 +1,425 @@
+:root,
+[data-theme="classic"] {
+  --bg: #ddd6c8;
+  --panel: #f4efe4;
+  --ink: #1c1a16;
+  --accent: #2c5f4a;
+  --accent-soft: #dce8e2;
+  --line: #c4bba8;
+  --muted: #6a6458;
+  --danger: #a33;
+  --canvas-bg: #ffffff;
+}
+
+[data-theme="teal"] {
+  --bg: #c5d9d4;
+  --panel: #e8f2ef;
+  --ink: #12332c;
+  --accent: #0d7a6a;
+  --accent-soft: #cfe8e2;
+  --line: #9bbbb2;
+  --muted: #4a6b63;
+  --danger: #a33;
+  --canvas-bg: #f7fffc;
+}
+
+[data-theme="blue"] {
+  --bg: #c8d2e0;
+  --panel: #e8eef8;
+  --ink: #152033;
+  --accent: #2a5fad;
+  --accent-soft: #d4e2f7;
+  --line: #a3b3c9;
+  --muted: #51607a;
+  --danger: #a33;
+  --canvas-bg: #f5f8ff;
+}
+
+[data-theme="amber"] {
+  --bg: #e4d5b5;
+  --panel: #faf3e4;
+  --ink: #2a2214;
+  --accent: #c47a12;
+  --accent-soft: #f5e2c4;
+  --line: #d0b888;
+  --muted: #7a6545;
+  --danger: #a33;
+  --canvas-bg: #fffaf0;
+}
+
+[data-theme="rose"] {
+  --bg: #e0c8cc;
+  --panel: #f8eaed;
+  --ink: #2a151a;
+  --accent: #b43d5a;
+  --accent-soft: #f0d4dc;
+  --line: #d0a8b2;
+  --muted: #7a4d58;
+  --danger: #a33;
+  --canvas-bg: #fff7f9;
+}
+
+:root {
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC",
+    sans-serif;
+  color: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: #ffffff;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.cgraph-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cgraph-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 0.75rem;
+  background: linear-gradient(180deg, #faf6ee, var(--panel));
+  border-bottom: 1px solid var(--line);
+}
+
+.cgraph-brand {
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.cgraph-menubar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.cgraph-sep {
+  width: 1px;
+  height: 1.2rem;
+  background: var(--line);
+  margin: 0 0.25rem;
+}
+
+.cgraph-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 158px 1fr 240px;
+  min-height: 0;
+}
+
+.cgraph-left,
+.cgraph-right {
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  padding: 0.65rem 0.7rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cgraph-right {
+  border-right: none;
+  border-left: 1px solid var(--line);
+}
+
+.cgraph-left h3,
+.cgraph-right h3 {
+  margin: 0.55rem 0 0.2rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.cgraph-left button,
+.cgraph-right .cgraph-groups button,
+.cgraph-menubar button,
+.cgraph-modal button {
+  border: 1px solid var(--line);
+  background: #fffdf8;
+  color: var(--ink);
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.cgraph-left button:hover,
+.cgraph-menubar button:hover,
+.cgraph-right .cgraph-groups button:hover {
+  background: var(--accent-soft);
+  border-color: #9bb5a8;
+}
+
+.cgraph-left button.active,
+.cgraph-right .cgraph-groups button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.cgraph-subpanel {
+  margin-top: 0.4rem;
+  padding: 0.45rem;
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cgraph-menubar button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cgraph-right .cgraph-groups button.muted {
+  opacity: 0.38;
+  background: #ece8e0;
+  color: #7a7468;
+}
+
+.cgraph-main {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  background: var(--canvas-bg, #ffffff);
+}
+
+.cgraph-right label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.cgraph-slider-row {
+  display: grid;
+  grid-template-columns: 1fr 58px;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.cgraph-slider-row input[type="number"] {
+  width: 100%;
+  padding: 0.2rem 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.cgraph-check,
+.cgraph-inline {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.cgraph-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.28rem;
+}
+
+.cgraph-groups button {
+  text-align: center;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.82rem;
+}
+
+.cgraph-bottom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.cgraph-polar {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.cgraph-group-tag {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.cgraph-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 0.6rem;
+}
+
+.cgraph-preview {
+  font-size: 0.8rem;
+  color: #8a4b00;
+  margin: 0.25rem 0;
+  padding: 0.35rem 0.45rem;
+  background: #fff3df;
+  border-radius: 4px;
+}
+
+.cgraph-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 14, 0.35);
+  display: grid;
+  place-items: center;
+  z-index: 20;
+}
+
+.cgraph-modal {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  width: min(420px, 92vw);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.cgraph-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.cgraph-zoom {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  min-width: 3.2rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+.cgraph-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  touch-action: none;
+}
+
+.cgraph-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.cgraph-paste-fab {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+
+.cgraph-paste-fab:hover {
+  filter: brightness(1.05);
+}
+
+.cgraph-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.cgraph-tool-btn {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.45rem;
+  text-align: left;
+  padding: 0.35rem 0.45rem !important;
+}
+
+.cgraph-tool-btn svg {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.cgraph-tool-label {
+  font-size: 0.82rem;
+  line-height: 1.2;
+}
+
+.cgraph-canvas.eraser-cursor {
+  cursor: none;
+}
+
+.cgraph-ctx {
+  position: absolute;
+  z-index: 6;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.cgraph-ctx button {
+  text-align: left;
+  padding: 0.4rem 0.65rem;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cgraph-ctx button:hover {
+  background: var(--accent-soft);
+}
+
+.cgraph-subpanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .cgraph-body {
+    grid-template-columns: 120px 1fr 180px;
+  }
+}

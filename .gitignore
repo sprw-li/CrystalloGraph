@@ -1,0 +1,19 @@
+node_modules
+dist
+out
+*.log
+.DS_Store
+*.local
+.release
+.vite
+tsconfig.tsbuildinfo
+
+# Electron binary (run scripts/fetch-electron.ps1)
+vendor/
+vendor/**
+
+# Local / editor
+.cursor/
+*.cgraph
+.env
+.env.*
