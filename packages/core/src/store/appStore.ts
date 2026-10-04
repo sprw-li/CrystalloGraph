@@ -23,6 +23,7 @@ import { applyModifiers } from "../tools/modifiers";
 import { remapDocumentCell, remapFracHandles } from "../coords/cellRemap";
 import { fracToCart, cartToFrac } from "../symmetry/groups";
 import { clearGroupElementCache } from "../symmetry/tiling";
+import { changeLang, currentLang, type Lang } from "../i18n";
 import {
   breaksGroupConstraint,
   materializeGroupCopies,
@@ -119,7 +120,7 @@ type PointerSample = { x: number; y: number; pressure?: number };
 type CartTip = { x: number; y: number };
 
 type AppState = {
-  lang: "zh" | "en";
+  lang: Lang;
   theme: "classic" | "teal" | "blue" | "amber" | "rose";
   doc: DocumentModel;
   tool: ToolId;
@@ -159,7 +160,8 @@ type AppState = {
   mode: "desktop" | "web";
   draggingHandle: "mirrorA" | "mirrorB" | "mandala" | null;
 
-  setLang: (lang: "zh" | "en") => void;
+  /** Switch UI language (persisted outside the document). */
+  setLang: (lang: Lang) => void;
   setTheme: (theme: AppState["theme"]) => void;
   setTool: (t: ToolId) => void;
   toggleMirror: () => void;
@@ -289,7 +291,7 @@ const defaultView: ViewFlags = {
 let betterTimer: ReturnType<typeof setTimeout> | null = null;
 
 export const useAppStore = create<AppState>((set, get) => ({
-  lang: "zh",
+  lang: currentLang(),
   theme: "classic",
   doc: createEmptyDocument(),
   tool: "pen",
@@ -329,7 +331,10 @@ export const useAppStore = create<AppState>((set, get) => ({
   mode: "web",
   draggingHandle: null,
 
-  setLang: (lang) => set({ lang }),
+  setLang: (lang) => {
+    changeLang(lang);
+    set({ lang });
+  },
   setTheme: (theme) => set({ theme }),
   setTool: (tool) => {
     const clearSel = tool === "pen" || tool === "eraser" || tool === "line" || tool === "rect" || tool === "ellipse";

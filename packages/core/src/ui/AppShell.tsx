@@ -4,10 +4,12 @@ import { SPACE_GROUP_IDS, SPACE_GROUPS, type SpaceGroupId } from "../symmetry/gr
 import { DrawingCanvas } from "./DrawingCanvas";
 import { Hotkeys } from "./Hotkeys";
 import { ToolIcon } from "./ToolIcon";
-import { downloadCgraph, openCgraphFromFile } from "../io/cgraph";
+import { CgraphError, downloadCgraph, openCgraphFromFile } from "../io/cgraph";
 import { exportDocumentPng } from "../io/exportPng";
 import { downloadDocumentSvg } from "../io/exportSvg";
-import { setupI18n } from "../i18n";
+import { SUPPORTED_LANGS, type Lang } from "../i18n";
+import type { LocaleKey } from "../i18n/locales";
+import { GroupInfo } from "./GroupInfo";
 import { useEffect, useRef, useState } from "react";
 import type { ToolId } from "../document/types";
 
@@ -29,7 +31,7 @@ export type AppShellProps = {
 };
 
 export function AppShell({ mode }: AppShellProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const fileRef = useRef<HTMLInputElement>(null);
   const lang = useAppStore((s) => s.lang);
   const doc = useAppStore((s) => s.doc);
@@ -60,6 +62,9 @@ export function AppShell({ mode }: AppShellProps) {
     includeSymCopies: true,
   });
   const [exporting, setExporting] = useState(false);
+  /** Inline (non-modal) feedback; stored as keys so it re-renders on language switch. */
+  const [openError, setOpenError] = useState<LocaleKey | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -67,12 +72,7 @@ export function AppShell({ mode }: AppShellProps) {
 
   useEffect(() => {
     useAppStore.getState().setMode(mode);
-    setupI18n(lang);
-  }, [mode, lang]);
-
-  useEffect(() => {
-    void i18n.changeLanguage(lang);
-  }, [lang, i18n]);
+  }, [mode]);
 
   return (
     <div className="cgraph-root">
@@ -116,12 +116,21 @@ export function AppShell({ mode }: AppShellProps) {
           <span className="cgraph-sep" />
           <button
             type="button"
+            title={t("zoomOut")}
+            aria-label={t("zoomOut")}
             onClick={() => useAppStore.getState().zoomBy(1 / 1.15)}
           >
             −
           </button>
-          <span className="cgraph-zoom">{Math.round(zoom * 100)}%</span>
-          <button type="button" onClick={() => useAppStore.getState().zoomBy(1.15)}>
+          <span className="cgraph-zoom" title={t("zoomLevel")}>
+            {Math.round(zoom * 100)}%
+          </span>
+          <button
+            type="button"
+            title={t("zoomIn")}
+            aria-label={t("zoomIn")}
+            onClick={() => useAppStore.getState().zoomBy(1.15)}
+          >
             +
           </button>
           <span className="cgraph-sep" />
@@ -129,12 +138,13 @@ export function AppShell({ mode }: AppShellProps) {
             {t("language")}
             <select
               value={lang}
-              onChange={(e) =>
-                useAppStore.getState().setLang(e.target.value as "zh" | "en")
-              }
+              onChange={(e) => useAppStore.getState().setLang(e.target.value as Lang)}
             >
-              <option value="zh">中文</option>
-              <option value="en">EN</option>
+              {SUPPORTED_LANGS.map((l) => (
+                <option key={l.id} value={l.id} lang={l.bcp47}>
+                  {l.nativeName}
+                </option>
+              ))}
             </select>
           </label>
           <label className="cgraph-inline">
@@ -166,13 +176,26 @@ export function AppShell({ mode }: AppShellProps) {
             try {
               const d = await openCgraphFromFile(f);
               useAppStore.getState().loadDoc(d);
+              setOpenError(null);
             } catch (err) {
-              alert(String(err));
+              setOpenError(
+                err instanceof CgraphError && err.code === "version"
+                  ? "error.cgraphVersion"
+                  : "error.cgraphInvalid",
+              );
             }
             e.target.value = "";
           }}
         />
       </header>
+      {openError && (
+        <div className="cgraph-notice" role="alert">
+          <span>{t(openError)}</span>
+          <button type="button" onClick={() => setOpenError(null)}>
+            {t("dismiss")}
+          </button>
+        </div>
+      )}
 
       <div className="cgraph-body">
         <aside className="cgraph-left">
@@ -366,8 +389,8 @@ export function AppShell({ mode }: AppShellProps) {
                   }`}
                   title={
                     compatible
-                      ? id
-                      : `${id}（与当前 a/b/θ 不完全匹配，点击将调整晶胞）`
+                      ? `${id} — ${t(`group.${id}.desc`)}`
+                      : t("groupIncompatible", { id })
                   }
                   onClick={() =>
                     useAppStore.getState().setSpaceGroup(id as SpaceGroupId)
@@ -378,6 +401,9 @@ export function AppShell({ mode }: AppShellProps) {
               );
             })}
           </div>
+
+          <h3>{t("groupInfo")}</h3>
+          <GroupInfo id={doc.spaceGroup as SpaceGroupId} />
 
           <h3>{t("view")}</h3>
           {(
@@ -547,6 +573,11 @@ export function AppShell({ mode }: AppShellProps) {
           <div className="cgraph-modal">
             <h3>{exportFormat === "svg" ? t("exportSvgTitle") : t("exportPngTitle")}</h3>
             <p className="cgraph-hint">{t("exportPngHint")}</p>
+            {exportError && (
+              <p className="cgraph-error" role="alert" title={exportError}>
+                {t("error.exportFailed")}
+              </p>
+            )}
             {(
               [
                 ["includeMainFrame", "exportIncludeMainFrame"],
@@ -572,6 +603,7 @@ export function AppShell({ mode }: AppShellProps) {
                 disabled={exporting}
                 onClick={async () => {
                   setExporting(true);
+                  setExportError(null);
                   try {
                     const docNow = useAppStore.getState().doc;
                     if (exportFormat === "svg") {
@@ -581,15 +613,22 @@ export function AppShell({ mode }: AppShellProps) {
                     }
                     setExportOpen(false);
                   } catch (err) {
-                    alert(String(err));
+                    console.error(err);
+                    setExportError(err instanceof Error ? err.message : String(err));
                   } finally {
                     setExporting(false);
                   }
                 }}
               >
-                {exporting ? "…" : t("exportPngConfirm")}
+                {exporting ? t("exportBusy") : t("exportPngConfirm")}
               </button>
-              <button type="button" onClick={() => setExportOpen(false)}>
+              <button
+                type="button"
+                onClick={() => {
+                  setExportOpen(false);
+                  setExportError(null);
+                }}
+              >
                 {t("betterCellCancel")}
               </button>
             </div>

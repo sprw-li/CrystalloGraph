@@ -17,9 +17,17 @@ export const F = {
   mx: { m: [1, 0, 0, -1], t: { x: 0, y: 0 } } as Aff2,
   /** mirror across b-axis direction through origin in rect: (u,v)→(-u,v) */
   my: { m: [-1, 0, 0, 1], t: { x: 0, y: 0 } } as Aff2,
-  /** hexagonal mirror across a-axis in cart (y→−y at θ=120): (u,v)→(u−v, −v) */
+  /**
+   * hexagonal mirror along the a-axis (y→−y at θ=120): (u,v)→(u−v, −v).
+   * ITA p31m op (x−y, −y); its mirror lines miss the threefold centres at
+   * (⅓,⅔),(⅔,⅓). Used by p31m (and p6m, where both mirror sets appear).
+   */
   hexMa: { m: [1, -1, 0, -1], t: { x: 0, y: 0 } } as Aff2,
-  /** hexagonal mirror across a-altitude (x→−x at θ=120): (u,v)→(−u+v, v) — used by p31m */
+  /**
+   * hexagonal mirror perpendicular to a (x→−x at θ=120): (u,v)→(−u+v, v).
+   * ITA p3m1 op (−x+y, y); its mirror lines pass through every threefold
+   * centre. Used by p3m1.
+   */
   hexMb: { m: [-1, 1, 0, 1], t: { x: 0, y: 0 } } as Aff2,
   /** diagonal mirror square: (u,v)→(v,u) */
   md: { m: [0, 1, 1, 0], t: { x: 0, y: 0 } } as Aff2,

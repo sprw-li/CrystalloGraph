@@ -203,7 +203,8 @@ export const SPACE_GROUPS: Record<SpaceGroupId, SpaceGroupDef> = {
     lattice: "hexagonal",
     constrain: forceHex,
     matchesHard: (c) => near(c.thetaDeg, 120) && near(c.a, c.b),
-    generatorsFrac: [F.rot3, F.hexMa],
+    // ITA No. 14: mirror (−x+y, y) passes through every threefold centre
+    generatorsFrac: [F.rot3, F.hexMb],
     specialPoints: pts(hexRCenters),
   },
   p31m: {
@@ -211,7 +212,8 @@ export const SPACE_GROUPS: Record<SpaceGroupId, SpaceGroupDef> = {
     lattice: "hexagonal",
     constrain: forceHex,
     matchesHard: (c) => near(c.thetaDeg, 120) && near(c.a, c.b),
-    generatorsFrac: [F.rot3, F.hexMb],
+    // ITA No. 15: mirror (x−y, −y); centres at (⅓,⅔),(⅔,⅓) lie off the mirrors
+    generatorsFrac: [F.rot3, F.hexMa],
     specialPoints: pts(hexRCenters),
   },
   p6: {
@@ -316,7 +318,7 @@ export function inferHardGroup(
 export type BetterCellHint = {
   targetGroup: SpaceGroupId;
   suggested: CellParams;
-  reasonKey: string;
+  reasonKey: "betterCell.square" | "betterCell.hex" | "betterCell.rect";
 };
 
 export function detectBetterCell(
