@@ -13,6 +13,6 @@
     "build:core": "npm run build -w @cgraph/core",
     "typecheck": "npm run typecheck -w @cgraph/core && npm run typecheck -w @cgraph/web",
     "shortcut": "powershell -ExecutionPolicy Bypass -File ./scripts/create-desktop-shortcut.ps1",
-    "test": "node scripts/test-eraser-math.mjs && node scripts/test-eraser-cut.mjs && node scripts/test-eraser-square.mjs && node scripts/test-i18n.mjs"
+    "test": "node scripts/test-eraser-math.mjs && node scripts/test-eraser-cut.mjs && node scripts/test-eraser-square.mjs && node scripts/test-i18n.mjs && node scripts/test-plane-groups.mjs"
   }
 }

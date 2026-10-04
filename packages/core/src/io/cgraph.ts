@@ -24,6 +24,15 @@ export class CgraphError extends Error {
   }
 }
 
+/*
+ * Note on p3m1 / p31m: before the fix that made their generators follow ITA,
+ * the app drew "p3m1" with the p31m operations and vice versa. Documents only
+ * store the group id plus master strokes, and both old and new files are
+ * version 2, so they cannot be told apart and are deliberately NOT migrated:
+ * an old p3m1/p31m drawing now renders with the correct (ITA) group. To get
+ * the old look back, select the other of the two groups — its generators are
+ * exactly the ones the old build used.
+ */
 export function parseCgraph(text: string): DocumentModel {
   let data: DocumentModel & { version: number };
   try {
