@@ -219,6 +219,11 @@ select {
   align-items: center;
 }
 
+.cgraph-slider-row input[type="range"] {
+  min-width: 0;
+  width: 100%;
+}
+
 .cgraph-slider-row input[type="number"] {
   width: 100%;
   padding: 0.2rem 0.3rem;
@@ -422,4 +427,78 @@ select {
   .cgraph-body {
     grid-template-columns: 120px 1fr 180px;
   }
+}
+
+/* Inline notices (no popups) */
+.cgraph-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--danger);
+  background: #fbecea;
+  border-bottom: 1px solid var(--line);
+}
+
+.cgraph-notice button {
+  border: 1px solid var(--line);
+  background: #fffdf8;
+  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
+  cursor: pointer;
+}
+
+.cgraph-error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  margin: 0.4rem 0;
+}
+
+/* Plane-group reference card */
+.cgraph-groupinfo {
+  font-size: 0.78rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.cgraph-groupinfo-title {
+  margin: 0 0 0.3rem;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.cgraph-groupinfo dl {
+  margin: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.cgraph-groupinfo-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.cgraph-groupinfo dt {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.cgraph-groupinfo dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.cgraph-symbol {
+  font-family: "Times New Roman", "Noto Serif", serif;
+  font-style: italic;
+}
+
+.cgraph-groupinfo-desc {
+  margin: 0.4rem 0 0;
+  line-height: 1.4;
 }

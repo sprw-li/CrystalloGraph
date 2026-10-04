@@ -316,7 +316,7 @@ export function inferHardGroup(
 export type BetterCellHint = {
   targetGroup: SpaceGroupId;
   suggested: CellParams;
-  reasonKey: string;
+  reasonKey: "betterCell.square" | "betterCell.hex" | "betterCell.rect";
 };
 
 export function detectBetterCell(

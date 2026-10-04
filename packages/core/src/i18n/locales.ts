@@ -1,3 +1,9 @@
+/**
+ * UI string tables. `zh` defines the key set; `en` must provide every key
+ * (enforced by the `LocaleDict` type). Hermann–Mauguin symbols (p1 … p6m),
+ * point-group symbols and orbifold symbols are notation, not prose, and are
+ * never translated — they live in `symmetry/groupInfo.ts`.
+ */
 export const zh = {
   appName: "CrystalloGraph",
   file: "文件",
@@ -11,6 +17,9 @@ export const zh = {
   exportSvg: "导出 SVG",
   undo: "撤销",
   redo: "重做",
+  zoomIn: "放大",
+  zoomOut: "缩小",
+  zoomLevel: "缩放比例",
   cell: "晶胞",
   spaceGroup: "空间群",
   a: "a",
@@ -58,6 +67,7 @@ export const zh = {
   previewGroup: "预告换群",
   suggestGroup: "你可能想要换到",
   applySuggestGroup: "切换到该群",
+  groupIncompatible: "{{id}}（与当前 a/b/θ 不完全匹配，点击将调整晶胞）",
   tools: "工具",
   modifiers: "局部对称",
   color: "颜色",
@@ -94,9 +104,68 @@ export const zh = {
   exportIncludeOtherFrames: "保留其它晶胞框",
   exportIncludeSymCopies: "保留对称副本",
   exportPngConfirm: "导出",
+  exportBusy: "正在导出…",
+
+  // Inline notices (no popups)
+  dismiss: "关闭",
+  "error.cgraphInvalid": "无法打开：这不是有效的 .cgraph 文件。",
+  "error.cgraphVersion": "无法打开：文件格式版本过旧，请新建文档（当前格式为分数坐标 v2）。",
+  "error.exportFailed": "导出失败，请重试。",
+
+  // Plane-group reference panel
+  groupInfo: "对称要素",
+  "groupInfo.itaNumber": "ITA 编号",
+  "groupInfo.fullSymbol": "完整符号",
+  "groupInfo.orbifold": "轨形符号",
+  "groupInfo.lattice": "格子类型",
+  "groupInfo.pointGroup": "点群",
+  "groupInfo.rotations": "旋转中心",
+  "groupInfo.mirrors": "镜线",
+  "groupInfo.glides": "滑移线",
+  "groupInfo.fundamentalDomain": "基本区域",
+  "groupInfo.fdValue": "晶胞的 1/{{n}}",
+  "groupInfo.fdWhole": "整个晶胞",
+  "groupInfo.rotationOrder": "{{n}} 次（{{deg}}°）",
+  "groupInfo.none": "无",
+  listSep: "、",
+  "groupInfo.yes": "有",
+  "groupInfo.no": "无",
+  "lattice.oblique": "斜交",
+  "lattice.rectangular": "矩形（简单）",
+  "lattice.centered": "有心矩形",
+  "lattice.square": "正方",
+  "lattice.hexagonal": "六方",
+  "group.p1.desc": "只有点阵平移，没有旋转中心、镜线或滑移线。",
+  "group.p2.desc":
+    "2 次（180°）旋转中心位于格点、棱中点和晶胞中心；没有镜线或滑移线。",
+  "group.pm.desc": "一组相互平行的镜线；没有旋转中心，也没有滑移线。",
+  "group.pg.desc": "一组相互平行的滑移线（反映后再平移半个周期）；没有镜线和旋转中心。",
+  "group.cm.desc": "平行镜线之间、正中位置夹有平行滑移线；有心矩形格子。",
+  "group.pmm.desc": "两组互相垂直的镜线；每个镜线交点都是 2 次旋转中心。",
+  "group.pmg.desc":
+    "一组平行镜线和与之垂直的滑移线；2 次旋转中心位于滑移线上、两镜线正中，不在镜线上。",
+  "group.pgg.desc": "两组互相垂直的滑移线，没有镜线；2 次旋转中心不在滑移线上。",
+  "group.cmm.desc":
+    "两组互相垂直的镜线，交点为 2 次旋转中心；另有不在镜线上的 2 次旋转中心，镜线之间有滑移线。",
+  "group.p4.desc": "4 次（90°）与 2 次旋转中心；没有镜线或滑移线。",
+  "group.p4m.desc":
+    "镜线沿晶胞两边和两条对角线方向；所有旋转中心都在镜线上，平行镜线之间有滑移线。",
+  "group.p4g.desc":
+    "4 次旋转中心不在任何镜线上；两组互相垂直的镜线交于 2 次旋转中心；另有滑移线。",
+  "group.p3.desc": "三类互不等价的 3 次（120°）旋转中心；没有镜线或滑移线。",
+  "group.p3m1.desc":
+    "三个方向的镜线（彼此夹 60°）；所有 3 次旋转中心都在镜线上，镜线之间有滑移线。",
+  "group.p31m.desc":
+    "三个方向的镜线；一部分 3 次旋转中心位于镜线交点，另一部分不在任何镜线上；镜线之间有滑移线。",
+  "group.p6.desc": "6 次（60°）、3 次与 2 次旋转中心；没有镜线或滑移线。",
+  "group.p6m.desc":
+    "六个方向的镜线；所有 6 次、3 次、2 次旋转中心都在镜线上，镜线之间有滑移线。",
 };
 
-export const en: typeof zh = {
+export type LocaleDict = { [K in keyof typeof zh]: string };
+export type LocaleKey = keyof LocaleDict;
+
+export const en: LocaleDict = {
   appName: "CrystalloGraph",
   file: "File",
   edit: "Edit",
@@ -109,23 +178,26 @@ export const en: typeof zh = {
   exportSvg: "Export SVG",
   undo: "Undo",
   redo: "Redo",
+  zoomIn: "Zoom in",
+  zoomOut: "Zoom out",
+  zoomLevel: "Zoom level",
   cell: "Unit cell",
-  spaceGroup: "Space group",
+  spaceGroup: "Plane group",
   a: "a",
   b: "b",
   theta: "θ",
-  lockGroup: "Lock space group",
+  lockGroup: "Lock plane group",
   lockGroupHint:
-    "When on: dragging a/b/θ will not suggest switching groups; keep the group you chose.",
-  showMainFrame: "Show main-frame border",
-  showMainFrameOnly: "Main-frame region only",
-  showSymCopies: "Show symmetry copies",
-  showOtherFrames: "Show other cell frames",
+    "When on, dragging a/b/θ never suggests switching group; the group you picked stays selected.",
+  showMainFrame: "Show master cell outline",
+  showMainFrameOnly: "Show master cell only",
+  showSymCopies: "Show symmetry-equivalent copies",
+  showOtherFrames: "Show neighboring cell outlines",
   showSpecialPoints: "Show special points",
   snapSpecial: "Snap to special points",
-  snapCurve: "Snap to curves",
+  snapCurve: "Snap to strokes",
   snapCurveHint:
-    "Curve snap: line/rect/ellipse endpoints snap to nearby existing strokes. Freehand pen ignores this.",
+    "Stroke snapping: endpoints of lines, rectangles and ellipses snap to nearby existing strokes for alignment. Freehand pen strokes are not affected.",
   lockR: "Lock r",
   lockPhi: "Lock φ",
   language: "Language",
@@ -135,32 +207,34 @@ export const en: typeof zh = {
   "theme.blue": "Indigo",
   "theme.amber": "Amber",
   "theme.rose": "Rose",
-  betterCellTitle: "Better cell choice available",
+  betterCellTitle: "A better cell choice was found",
   betterCellApply: "Apply",
   betterCellCancel: "Cancel",
   betterCellDontAsk: "Don't ask again this session",
-  cellUnlockTitle: "Unlock and switch to p1",
+  cellUnlockTitle: "Unlock the cell and switch to p1",
   cellUnlockBody:
-    "This space group locks cell metrics (e.g. a=b, fixed angle). Continuing will unlock them and switch to p1.",
-  cellUnlockToP1: "Unlock → p1",
-  cellUnlockKeepLinked: "Keep locked (sync metrics)",
+    "The current plane group constrains the cell (e.g. a = b or a fixed angle). Changing it further removes the constraint and switches the group to p1.",
+  cellUnlockToP1: "Unlock and switch to p1",
+  cellUnlockKeepLinked: "Keep constraint (sync parameters)",
   cellUnlockCancel: "Cancel",
-  cellUnlockKeepPatternTitle: "Keep the original pattern?",
+  cellUnlockKeepPatternTitle: "Keep the current pattern?",
   cellUnlockKeepPatternBody:
-    "Keep: bake current symmetry images into real strokes. Discard: keep masters only and remap under the new cell.",
-  cellUnlockKeepPattern: "Keep images as real objects",
-  cellUnlockDiscardPattern: "Discard images",
-  "betterCell.square": "Near-equal sides and θ≈90°. Suggest a square cell.",
-  "betterCell.hex": "Near-equal sides and θ≈120°. Suggest a hexagonal cell.",
-  "betterCell.rect": "θ near 90°. Suggest a rectangular cell.",
+    "Keep: turn the current symmetry-equivalent copies into real, editable strokes. Discard: keep only the hand-drawn master strokes and remap them to the new cell.",
+  cellUnlockKeepPattern: "Keep copies as real strokes",
+  cellUnlockDiscardPattern: "Discard copies",
+  "betterCell.square": "a ≈ b and θ ≈ 90°: a square lattice is suggested.",
+  "betterCell.hex": "a ≈ b and θ ≈ 120°: a hexagonal lattice is suggested.",
+  "betterCell.rect": "θ ≈ 90°: a rectangular cell is suggested.",
   previewGroup: "Group preview",
   suggestGroup: "You may want to switch to",
   applySuggestGroup: "Switch to this group",
+  groupIncompatible:
+    "{{id}} — does not match the current a/b/θ; selecting it will adjust the cell",
   tools: "Tools",
   modifiers: "Local symmetry",
   color: "Color",
-  width: "Width",
-  webShellHint: "Web shell: draw and open/save .cgraph",
+  width: "Line width",
+  webShellHint: "Web version: draw, open and save .cgraph files",
   "tool.selectBox": "Box select",
   "tool.selectLasso": "Lasso select",
   "tool.move": "Move",
@@ -171,14 +245,15 @@ export const en: typeof zh = {
   "tool.ellipse": "Ellipse",
   "modifier.mirror": "Mirror",
   "modifier.mandala": "Mandala",
-  mandalaN: "Fold count",
-  handleHint: "On: drag red handles (snap to specials); live preview while drawing",
+  mandalaN: "Rotation order",
+  handleHint:
+    "On: drag the red handles to place them (they snap to special points); copies preview live while you draw. Mirror and Mandala are mutually exclusive.",
   eraserMode: "Eraser mode",
-  eraserStroke: "Erase stroke",
-  eraserPath: "Path erase",
+  eraserStroke: "Erase whole stroke",
+  eraserPath: "Erase along path",
   eraserSize: "Eraser size",
-  pressureHint: "Pressure supported (tablet); mouse uses medium pressure",
-  desktopHint: "Desktop · Ctrl+Z/Y undo/redo · Ctrl+/- zoom · Ctrl+N/C/X/V",
+  pressureHint: "Pen pressure supported (graphics tablet); a mouse uses medium pressure.",
+  desktopHint: "Desktop version · Ctrl+Z/Y undo/redo · Ctrl+/- zoom · Ctrl+N/C/X/V",
   ctxCut: "Cut",
   ctxCopy: "Copy",
   ctxClone: "Clone",
@@ -186,12 +261,73 @@ export const en: typeof zh = {
   paste: "Paste",
   exportPngTitle: "Export PNG",
   exportSvgTitle: "Export SVG",
-  exportPngHint: "Choose which overlays to keep (async encode, no UI freeze)",
-  exportIncludeMainFrame: "Include main frame",
+  exportPngHint:
+    "Choose which overlays to keep in the export (encoded in the background so the UI stays responsive).",
+  exportIncludeMainFrame: "Include master cell outline",
   exportIncludeSpecialPoints: "Include special points",
-  exportIncludeOtherFrames: "Include other cell frames",
-  exportIncludeSymCopies: "Include symmetry copies",
+  exportIncludeOtherFrames: "Include other cell outlines",
+  exportIncludeSymCopies: "Include symmetry-equivalent copies",
   exportPngConfirm: "Export",
-};
+  exportBusy: "Exporting…",
 
-export type LocaleKey = keyof typeof zh;
+  dismiss: "Dismiss",
+  "error.cgraphInvalid": "Can't open: this is not a valid .cgraph file.",
+  "error.cgraphVersion":
+    "Can't open: the file uses an older format. Please start a new document (current format: fractional coordinates, v2).",
+  "error.exportFailed": "Export failed. Please try again.",
+
+  groupInfo: "Symmetry elements",
+  "groupInfo.itaNumber": "ITA No.",
+  "groupInfo.fullSymbol": "Full symbol",
+  "groupInfo.orbifold": "Orbifold",
+  "groupInfo.lattice": "Lattice",
+  "groupInfo.pointGroup": "Point group",
+  "groupInfo.rotations": "Rotation centers",
+  "groupInfo.mirrors": "Mirror lines",
+  "groupInfo.glides": "Glide lines",
+  "groupInfo.fundamentalDomain": "Fundamental domain",
+  "groupInfo.fdValue": "1/{{n}} of the cell",
+  "groupInfo.fdWhole": "the whole cell",
+  "groupInfo.rotationOrder": "{{n}}-fold ({{deg}}°)",
+  "groupInfo.none": "none",
+  listSep: ", ",
+  "groupInfo.yes": "yes",
+  "groupInfo.no": "no",
+  "lattice.oblique": "Oblique",
+  "lattice.rectangular": "Primitive rectangular",
+  "lattice.centered": "Centered rectangular",
+  "lattice.square": "Square",
+  "lattice.hexagonal": "Hexagonal",
+  "group.p1.desc":
+    "Lattice translations only: no rotation centers, mirror lines or glide lines.",
+  "group.p2.desc":
+    "Twofold (180°) rotation centers at the lattice points, edge midpoints and cell center; no mirror or glide lines.",
+  "group.pm.desc": "Parallel mirror lines; no rotation centers and no glide lines.",
+  "group.pg.desc":
+    "Parallel glide lines (reflect, then translate by half a period); no mirror lines or rotation centers.",
+  "group.cm.desc":
+    "Parallel mirror lines with glide lines halfway between them; centered rectangular lattice.",
+  "group.pmm.desc":
+    "Mirror lines in two perpendicular directions; every mirror intersection is a twofold rotation center.",
+  "group.pmg.desc":
+    "Parallel mirror lines and perpendicular glide lines; the twofold rotation centers lie on the glide lines, midway between mirrors.",
+  "group.pgg.desc":
+    "Glide lines in two perpendicular directions and no mirror lines; the twofold rotation centers lie off the glide lines.",
+  "group.cmm.desc":
+    "Mirror lines in two perpendicular directions meeting at twofold centers, plus further twofold centers off the mirrors; glide lines between the mirrors.",
+  "group.p4.desc": "Fourfold (90°) and twofold rotation centers; no mirror or glide lines.",
+  "group.p4m.desc":
+    "Mirror lines along both cell edges and both diagonals; every rotation center lies on mirrors. Glide lines run between parallel mirrors.",
+  "group.p4g.desc":
+    "Fourfold centers that lie on no mirror; mirror lines in two perpendicular directions meet at twofold centers; glide lines.",
+  "group.p3.desc":
+    "Three inequivalent kinds of threefold (120°) rotation centers; no mirror or glide lines.",
+  "group.p3m1.desc":
+    "Mirror lines in three directions, 60° apart; every threefold center lies on mirrors. Glide lines run between mirrors.",
+  "group.p31m.desc":
+    "Mirror lines in three directions; some threefold centers sit at mirror intersections, others lie on no mirror. Glide lines run between mirrors.",
+  "group.p6.desc":
+    "Sixfold (60°), threefold and twofold rotation centers; no mirror or glide lines.",
+  "group.p6m.desc":
+    "Mirror lines in six directions; all sixfold, threefold and twofold centers lie on mirrors. Glide lines run between mirrors.",
+};
