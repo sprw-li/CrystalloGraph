@@ -71,7 +71,20 @@ assert.equal(matchLang("zh-Hant-TW"), "zh");
 assert.equal(matchLang("en-GB"), "en");
 assert.equal(matchLang("de-DE"), null);
 assert.equal(matchLang(undefined), null);
-assert.equal(detectInitialLang(), "en", "no navigator/localStorage → English fallback");
-checks += 6;
+// Node >= 21 exposes a global navigator that reflects the OS locale.
+const realNavigator = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+const withNavigator = (nav, fn) => {
+  Object.defineProperty(globalThis, "navigator", { value: nav, configurable: true, writable: true });
+  try {
+    return fn();
+  } finally {
+    if (realNavigator) Object.defineProperty(globalThis, "navigator", realNavigator);
+    else delete globalThis.navigator;
+  }
+};
+assert.equal(withNavigator(undefined, detectInitialLang), "en", "no navigator/localStorage → English fallback");
+assert.equal(withNavigator({ languages: ["de-DE"], language: "de-DE" }, detectInitialLang), "en", "unsupported locale → English");
+assert.equal(withNavigator({ languages: ["zh-CN"], language: "zh-CN" }, detectInitialLang), "zh", "zh locale → Chinese");
+checks += 8;
 
 console.log(`i18n OK — ${zhKeys.length} keys × 2 languages, 17 groups, ${checks} checks`);

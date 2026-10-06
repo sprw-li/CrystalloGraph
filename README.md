@@ -4,6 +4,8 @@
 
 Draw once, and let symmetry repeat it: an interactive drawing tool for the **17 plane groups** (wallpaper groups). The UI is available in English and Chinese.
 
+**Try it in your browser: <https://sprw-li.github.io/CrystalloGraph/>**
+
 ![CrystalloGraph in English: a p4m pattern, with the symmetry-elements panel on the right](docs/screenshot-en.png)
 
 ## What are the 17 plane groups?
@@ -31,6 +33,8 @@ npm run dev:web        # web version → http://localhost:5173
 npm run build:web      # static build in apps/web/dist
 npm run typecheck && npm test
 ```
+
+Every push to `main` builds the web version and publishes it to GitHub Pages (`.github/workflows/pages.yml`).
 
 The desktop version (Electron) is currently Windows-only. The Electron binary is not in git, so fetch it once first:
 

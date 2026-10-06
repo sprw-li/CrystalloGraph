@@ -4,6 +4,8 @@
 
 对称绘画工具：17 种壁纸空间群、主框图唯一可编辑图层、极径/极角落笔、`.cgraph` 工程文件。
 
+**在线试用：<https://sprw-li.github.io/CrystalloGraph/>**
+
 ![CrystalloGraph 中文界面：p4m 图样与右侧“对称要素”面板](docs/screenshot-zh.png)
 
 ## 结构
@@ -21,6 +23,8 @@ npm install
 npm run dev:web        # http://localhost:5173
 npm run typecheck && npm test
 ```
+
+每次推送到 `main` 都会自动构建网页版并发布到 GitHub Pages（`.github/workflows/pages.yml`）。
 
 ## 桌面版（可选）
 
